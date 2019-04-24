@@ -47,47 +47,6 @@ def csv_format(columns):
     return s_acc
 
 
-def combinations(start, end, features):
-    acc = 0
-    for i in range(start, end):
-        acc += len(list(itertools.combinations([i for i in range(features)], i)))
-    return acc
-
-
-def loops(num_features, num_starting_set, desired_features):
-    start_point = num_features - num_starting_set
-    stop_point = start_point - (desired_features - num_starting_set)
-    acc = 0
-    while start_point > stop_point:
-        acc += 35 * (start_point + 1)
-        start_point -= 1
-    return acc
-
-
-def LIMSModelAnal(labels, predictions):
-    fp = 0
-    fn = 0
-    ex_neg = 0
-    ex_pos = 0
-
-    mean_pred = np.mean(predictions)
-    std_pred = np.std(predictions)
-    median_pred = np.median(predictions)
-    for i in range(len(labels)):
-        pred = math.exp(predictions[i])
-        actual = math.exp(labels[i])
-
-        if actual > 10:
-            ex_neg += 1
-        else:
-            ex_pos += 1
-        if (actual >= 10 and pred < 10):
-            fn += 1
-        elif (actual < 10 and pred >= 10):
-            fp += 1
-
-    return fp, fn, ex_neg, ex_pos, mean_pred, std_pred, median_pred
-
 def binary_model_analysis(labels, predictions):
     fp = 0
     fn = 0
@@ -111,26 +70,6 @@ def binary_model_analysis(labels, predictions):
             fp += 1
 
     return fp, fn, ex_neg, ex_pos, mean_pred, std_pred, median_pred
-
-
-def LIMSModelRes(labels, predictions):
-    plt.scatter(labels, predictions)
-    plt.xlabel('True Values')
-    plt.ylabel('Predictions')
-    plt.axis('equal')
-    plt.axis('square')
-    plt.xlim([0, plt.xlim()[1]])
-    plt.ylim([0, plt.ylim()[1]])
-    _ = plt.plot([-100, 100], [-100, 100])
-
-    plt.show()
-
-    error = predictions - labels
-    plt.hist(error, bins=25)
-    plt.xlabel("Prediction Error")
-    _ = plt.ylabel("Count")
-
-    plt.show()
 
 
 def list_from_file(path):
